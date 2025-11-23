@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>About Desi McCarthy - Photographic Art</title>
+
+<!-- Load Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJzL5qQ/14E0p+1E+FjE7jN6w0oI4g2Z3rQ0z5G8bF5/nF0kI/b2lR7g7l0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    :root {
+        /* Define large, responsive font sizes */
+        --font-base: clamp(1rem, 1.5vw, 1.15rem); /* For general text, slightly larger than 16px */
+        --font-large: clamp(1.2rem, 2.5vw, 1.5rem); /* For large paragraphs */
+        --font-heading: clamp(2.5rem, 6vw, 4rem); 
+        --color-primary: #000;
+        --color-secondary: #333;
+        --color-background: #F5F2EB;
+    }
+
+    body {
+        margin: 0;
+        background: var(--color-background);
+        font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    /* Apply large font size globally to all text elements, as requested */
+    p, a, h1, h3, div, span, button, input {
+        font-size: var(--font-base);
+    }
+    
+    /* Specific size overrides */
+    h1 { font-size: clamp(3rem, 7vw, 4.5rem); }
+    h2 { 
+        font-size: var(--font-heading); 
+        line-height: 1.3;
+        font-weight: 300;
+    }
+    
+    /* Header */
+    header {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 20;
+        background: var(--color-background);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* Logo */
+    .logo img {
+        width: 150px;
+        height: auto;
+    }
+
+    /* Hamburger Icon */
+    .hamburger {
+        width: 70px;
+        height: 22px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+        margin-right: 10px;
+    }
+
+    .hamburger span {
+        width: 50%;
+        height: 2px;
+        background: var(--color-primary);
+        display: block;
+        border-radius: 1px;
+        transition: 0.3s;
+    }
+
+    /* Fullscreen Menu */
+    .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: var(--color-background);
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+    }
+
+    .menu-overlay.open {
+        display: flex;
+        opacity: 1;
+    }
+
+    /* Close Icon */
+    .close-icon {
+        position: absolute;
+        top: 22px;
+        right: 25px;
+        font-size: 40px;
+        color: var(--color-primary);
+        cursor: pointer;
+        display: none;
+        font-weight: 200;
+    }
+
+    .menu-overlay.open .close-icon {
+        display: block;
+    }
+
+    /* Menu Text */
+    .menu-item {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        margin: 14px 0;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--color-primary);
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 300;
+    }
+
+    /* Submenus */
+    .submenu {
+        display: none;
+        flex-direction: column;
+        margin-top: 6px;
+    }
+
+    .submenu a {
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        margin: 6px 0;
+        color: var(--color-primary);
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: 300;
+        letter-spacing: 1px;
+    }
+    
+    /* --- ABOUT PAGE SPECIFIC STYLING --- */
+    main {
+        padding-top: 150px; /* Space for fixed header */
+        padding-bottom: 100px;
+        min-height: 80vh;
+    }
+
+    .about-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 20px;
+        text-align: left; /* Ensure main content is aligned left */
+    }
+    
+    /* 1. Page Title: Line and Text in one row, aligned left */
+    .page-title {
+        font-size: clamp(1.5rem, 4vw, 2.2rem);
+        letter-spacing: 0; /* No letter spacing */
+        text-transform: uppercase;
+        font-weight: 400; /* Not bold */
+        margin-bottom: 50px;
+        display: flex; /* Use flexbox to align line and text horizontally */
+        align-items: center; /* Vertically align them */
+        width: fit-content; /* Only take up the space needed */
+    }
+    
+    /* The CSS for the horizontal line */
+    .title-line {
+        display: block;
+        width: 50px; /* Length of the line (adjust as needed) */
+        height: 1px;
+        background: var(--color-primary); 
+        margin-right: 15px; /* Space between the line and the text */
+    }
+
+    /* 2. Portrait Image */
+    .portrait-wrapper {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto 50px 0; /* Aligned left, so only auto margin on right side (if container larger) */
+    }
+    .portrait-wrapper img {
+        width: 100%;
+        height: 500px; 
+        object-fit: cover;
+        display: block;
+    }
+
+    /* 3. Bio Paragraph */
+    .bio-paragraph {
+        text-align: left; /* Aligned to the left */
+        font-size: var(--font-large);
+        line-height: 1.8;
+        color: var(--color-secondary);
+        margin-bottom: 80px;
+    }
+
+    /* 4. Centered Big Font Title - keeping this centered as it looks better for a big statement */
+    .big-light-title {
+        text-align: center;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 300; /* Light font */
+        margin-top: 0;
+        margin-bottom: 60px;
+        line-height: 1.3;
+        color: var(--color-primary);
+    }
+    
+    /* 5. Button: Let's Connect - centering this for prominence */
+    .connect-btn-wrapper {
+        text-align: center;
+    }
+    
+    .connect-btn {
+        border: 2px solid var(--color-primary);
+        padding: 15px 40px;
+        color: var(--color-primary);
+        letter-spacing: 3px;
+        text-decoration: none;
+        font-size: var(--font-base);
+        display: inline-block;
+        transition: background-color 0.3s, color: 0.3s;
+        text-transform: uppercase;
+    }
+    .connect-btn:hover {
+        background: var(--color-primary);
+        color: var(--color-background);
+    }
+
+
+    /* --- FOOTER & MARQUEE (Copied for consistency) --- */
+    .marquee-container {
+        margin: 0; 
+        overflow: hidden;
+        background: var(--color-primary);
+        padding: 15px 0;
+    }
+
+    .marquee-content {
+        display: flex;
+        width: fit-content; 
+        animation: scroll-left 30s linear infinite;
+        white-space: nowrap;
+    }
+
+    .marquee-text {
+        font-size: clamp(1.1rem, 3vw, 1.5rem);
+        color: var(--color-background);
+        letter-spacing: 2px;
+        padding-right: 50px;
+        text-transform: uppercase;
+        flex-shrink: 0; 
+    }
+
+    @keyframes scroll-left {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-50%); } 
+    }
+
+    footer {
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 20px;
+    }
+
+    .social-icons a {
+        color: #888;
+        font-size: 0.9rem;
+        transition: color 0.3s;
+        text-decoration: none;
+    }
+
+    .social-icons a:hover {
+        color: var(--color-primary);
+    }
+    
+    .copyright-text {
+        font-size: 0.75rem; 
+        color: #666; 
+    }
+    
+    .copyright-text a {
+        color: inherit;
+        text-decoration: none;
+        font-size: inherit;
+    }
+    .copyright-text a:hover {
+        color: var(--color-primary);
+    }
+
+    /* SCROLL MOTION EFFECT */
+    .scroll-animate {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .scroll-animate.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .hero, header, .menu-overlay, main { 
+        transition: none;
+        opacity: 1; 
+        transform: none;
+    }
+
+</style>
+
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="assets/logo.jpg" alt="Logo" />
+    </div>
+
+    <div class="hamburger" onclick="openMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</header>
+
+<!-- FULLSCREEN MENU -->
+<div class="menu-overlay" id="menu">
+    <div class="close-icon" onclick="closeMenu()">×</div>
+    <!-- Menu items here... -->
+    <a class="menu-item" href="index.html">Home</a>
+    <a class="menu-item" href="about.html">About</a>
+    <div class="menu-item" onclick="toggleSubmenu('info-sub')">Info</div>
+    <div id="info-sub" class="submenu">
+        <a href="faqs.html">Faqs</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="terms.html">Terms & Conditions</a>
+    </div>
+    <div class="menu-item" onclick="toggleSubmenu('services-sub')">Services</div>
+    <div id="services-sub" class="submenu">
+        <a href="maternity.html">Maternity</a>
+        <a href="new-borns.html">New Borns</a>
+        <a href="family.html">Family</a>
+        <a href="couples.html">Couples</a>
+        <a href="boudoir.html">Boudoir</a>
+        <a href="portrait.html">Portrait</a>
+        <a href="graduation.html">Graduation</a>
+        <a href="wedding.html">Intimate Wedding</a>
+    </div>
+    <a class="menu-item" href="book.html">Book A Session</a>
+    <a class="menu-item" href="blog.html">Blog</a>
+    <a class="menu-item" href="contact.html">Contact</a>
+</div>
+
+<main>
+    <div class="about-container">
+        
+        <!-- 1. Page Title: Line and Text in one row, aligned left -->
+        <h1 class="page-title scroll-animate">
+            <span class="title-line"></span>
+            ABOUT ME
+        </h1>
+
+        <!-- 2. Portrait Image (aligned left with the portrait-wrapper margin change) -->
+        <div class="portrait-wrapper scroll-animate">
+            <img src="assets/desi-portrait.jpg" alt="Desi McCarthy Portrait">
+        </div>
+
+        <!-- 3. Bio Paragraph (aligned left) -->
+        <p class="bio-paragraph scroll-animate">
+            Hi I am Desi McCarthy, and I am a passionate natural light photographer based in the heart of Bloemfontein, South Africa. My photographic journey began many years ago with a simple desire: to freeze the fleeting moments of life that are often missed in the rush of the everyday. I specialize in creating timeless, emotive portraits, focusing on connection, real emotion, and the subtle interplay of light and shadow. Whether I am capturing the tender beginnings of a new family, the deep bonds of a couple, or the proud culmination of a graduation, my aim is to deliver authentic images that become cherished family heirlooms. Photography, for me, is about translating feelings into visuals, ensuring that your unique story is not just seen, but felt.
+        </p>
+
+        <!-- 4. Centered Big Font Title -->
+        <h2 class="big-light-title scroll-animate">Desi, Capturing the essence of life through a lens.</h2>
+
+        <!-- 5. Button: Let's Connect (wrapper added to center the button) -->
+        <div class="connect-btn-wrapper scroll-animate">
+            <a href="book.html" class="connect-btn">Let's Connect</a>
+        </div>
+        
+    </div>
+</main>
+
+
+<!-- MARQUEE SECTION (Original bottom black one) -->
+<div class="marquee-container scroll-animate">
+    <div class="marquee-content">
+        <span class="marquee-text">Art is not what you see, but what you make others see. Photography is the story I fail to put into words. &nbsp;&nbsp;&nbsp;</span>
+        <span class="marquee-text">Art is not what you see, but what you make others see. Photography is the story I fail to put into words. &nbsp;&nbsp;&nbsp;</span>
+    </div>
+</div>
+
+<!-- FOOTER SECTION -->
+<footer>
+    <div class="social-icons scroll-animate">
+        <a href="tel:+27833470218" aria-label="Call Desi McCarthy"><i class="fa-solid fa-phone"></i></a>
+        <a href="mailto:desmc@xsinet.co.za" aria-label="Email Desi McCarthy"><i class="fa-solid fa-envelope"></i></a>
+        <a href="https://www.facebook.com/DesiMcCarthyPhotography" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/desi_mccarthy_photographic_art" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+    </div>
+
+    <div class="copyright-text scroll-animate">
+        Copyright &copy; Desi McCharthy Photographic Art | All Rights Reserved | Web Designs by 
+        <a href="https://webbytlotly.netlify.app" target="_blank" rel="noopener noreferrer">Tlotly</a>
+    </div>
+</footer>
+
+<script>
+    // --- Menu Logic (Existing) ---
+    function openMenu() {
+        document.getElementById("menu").classList.add("open");
+    }
+
+    function closeMenu() {
+        document.getElementById("menu").classList.remove("open");
+    }
+
+    function toggleSubmenu(id) {
+        let submenu = document.getElementById(id);
+        submenu.style.display = submenu.style.display === "flex" ? "none" : "flex";
+    }
+
+    // --- Scroll Fade-In Effect (Intersection Observer) ---
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const scrollObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.scroll-animate').forEach(section => {
+        scrollObserver.observe(section);
+    });
+</script>
+
+</body>
+</html>

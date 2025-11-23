@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Book a Session - Desi McCarthy</title>
+
+<!-- Load Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    :root {
+        /* Reuse variables for consistency */
+        --font-base: clamp(1rem, 1.5vw, 1.15rem);
+        --font-large: clamp(1.2rem, 2.5vw, 1.5rem);
+        --font-heading: clamp(2.5rem, 6vw, 4rem);
+        --color-primary: #000;
+        --color-secondary: #333;
+        --color-background: #F5F2EB;
+        --color-light-text: #F5F2EB; 
+        --color-accent: #000; /* Used for hover states and selection */
+    }
+
+    body {
+        margin: 0;
+        background: var(--color-background);
+        font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    p, a, h1, h3, div, span, button, input, label, textarea, select {
+        font-size: var(--font-base);
+    }
+
+    /* --- Header & Menu (Reused) --- */
+    header {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 20;
+        background: var(--color-background);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .logo img {
+        width: 150px;
+        height: auto;
+    }
+
+    .hamburger {
+        width: 70px;
+        height: 22px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+        margin-right: 10px;
+    }
+
+    .hamburger span {
+        width: 50%;
+        height: 2px;
+        background: var(--color-primary);
+        display: block;
+        border-radius: 1px;
+        transition: 0.3s;
+    }
+
+    .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: var(--color-background);
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+    }
+
+    .menu-overlay.open {
+        display: flex;
+        opacity: 1;
+    }
+
+    .close-icon {
+        position: absolute;
+        top: 22px;
+        right: 25px;
+        font-size: 40px;
+        color: var(--color-primary);
+        cursor: pointer;
+        display: block;
+        font-weight: 200; /* Thin font weight */
+        line-height: 1; 
+    }
+
+    .menu-item {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        margin: 14px 0;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--color-primary);
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 300;
+    }
+
+    .submenu {
+        display: none;
+        flex-direction: column;
+        margin-top: 6px;
+    }
+
+    .submenu a {
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        margin: 6px 0;
+        color: var(--color-primary);
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: 300;
+        letter-spacing: 1px;
+    }
+
+    /* --- BOOK PAGE SPECIFIC STYLES --- */
+
+    /* 1. Book Hero Section */
+    .book-hero {
+        position: relative;
+        width: 100%;
+        height: 60vh; 
+        min-height: 500px;
+        /* Updated image path */
+        background-image: url('assets/banner.jpg'); 
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: flex-end; 
+        margin-top: 80px;
+        padding-bottom: 40px; 
+    }
+    
+    .book-hero-content {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        text-align: left;
+    }
+
+    .book-hero-title {
+        font-size: clamp(3.2rem, 6vw, 4.5rem);
+        font-weight: 300; /* Light font */
+        color: var(--color-light-text);
+        text-transform: none; /* Normal case */
+        margin: 0;
+        line-height: 1.2;
+    }
+    
+    .book-main {
+        max-width: 1200px;
+        margin: 60px auto;
+        padding: 0 20px;
+    }
+
+    /* 2. Intro Paragraph */
+    .intro-text {
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto 60px auto;
+        font-size: var(--font-large);
+        line-height: 1.7;
+        color: var(--color-secondary);
+    }
+    
+    /* 3. Booking Grid (Calendar and Form Side-by-Side on desktop) */
+    .booking-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 60px;
+        margin-bottom: 80px;
+    }
+
+    @media (min-width: 900px) {
+        .booking-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    /* Calendar Styles */
+    .calendar-wrapper {
+        border: 1px solid #ddd;
+        padding: 20px;
+        background: #fff;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    #calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        font-size: var(--font-large);
+        font-weight: 600;
+    }
+
+    #calendar-header button {
+        background: none;
+        border: none;
+        color: var(--color-primary);
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 5px;
+        transition: color 0.2s;
+    }
+    #calendar-header button:hover:not(:disabled) {
+        color: var(--color-secondary);
+    }
+    #calendar-header button:disabled {
+        opacity: 0.3;
+        cursor: default;
+    }
+
+    #calendar-body {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        text-align: center;
+        gap: 5px;
+    }
+    
+    .day-name {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--color-secondary);
+        padding: 8px 0;
+        text-transform: uppercase;
+    }
+
+    .date-cell {
+        padding: 10px 5px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.2s, color 0.2s;
+        font-size: 1rem;
+        font-weight: 300;
+    }
+
+    .date-cell.inactive {
+        color: #aaa;
+        cursor: default;
+        pointer-events: none;
+    }
+
+    .date-cell:not(.inactive):hover {
+        background-color: #eee;
+    }
+    
+    .date-cell.today {
+        border: 1px solid var(--color-primary);
+    }
+
+    .date-cell.selected {
+        background-color: var(--color-accent);
+        color: var(--color-light-text);
+        font-weight: 600;
+    }
+
+    /* 4. Booking Form Styles */
+    .form-label {
+        font-size: var(--font-large);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 30px;
+        display: block;
+        color: var(--color-primary);
+    }
+    
+    .booking-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .form-group label {
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.9rem;
+    }
+
+    .form-group input, 
+    .form-group textarea,
+    .form-group select {
+        padding: 15px;
+        border: 1px solid #ccc;
+        background: #fff;
+        font-family: inherit;
+        font-size: 1rem;
+        outline: none;
+        transition: border-color 0.3s;
+        border-radius: 0; /* Match clean aesthetic */
+    }
+    
+    .form-group input:focus, 
+    .form-group textarea:focus,
+    .form-group select:focus {
+        border-color: var(--color-primary);
+    }
+    
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    @media (min-width: 600px) {
+        .form-row {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+
+    .submit-btn {
+        padding: 15px 40px;
+        background: transparent;
+        border: 2px solid var(--color-primary);
+        color: var(--color-primary);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        cursor: pointer;
+        align-self: flex-start;
+        transition: background 0.3s, color 0.3s;
+        margin-top: 10px;
+    }
+    
+    .submit-btn:hover {
+        background: var(--color-primary);
+        color: var(--color-background);
+    }
+
+    /* 5. Important Information Section */
+    .important-info-section {
+        margin-top: 50px;
+        padding-top: 40px;
+        border-top: 1px solid #ddd;
+    }
+    
+    .info-title {
+        font-size: var(--font-large);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+        color: var(--color-primary);
+    }
+    
+    .info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        color: var(--color-secondary);
+        line-height: 1.8;
+    }
+    
+    .info-list li {
+        margin-bottom: 10px;
+        position: relative;
+        padding-left: 1.5em;
+    }
+    
+    .info-list li::before {
+        content: '—';
+        position: absolute;
+        left: 0;
+        color: var(--color-primary);
+        font-weight: bold;
+    }
+    
+    /* --- MARQUEE & FOOTER (Reused) --- */
+    .marquee-container {
+        margin: 0; 
+        overflow: hidden;
+        background: var(--color-primary);
+        padding: 15px 0;
+    }
+
+    .marquee-content {
+        display: flex;
+        width: fit-content; 
+        animation: scroll-left 30s linear infinite;
+        white-space: nowrap;
+    }
+
+    .marquee-text {
+        font-size: clamp(1.1rem, 3vw, 1.5rem);
+        color: var(--color-background);
+        letter-spacing: 2px;
+        padding-right: 50px;
+        text-transform: uppercase;
+        flex-shrink: 0; 
+    }
+
+    @keyframes scroll-left {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-50%); } 
+    }
+
+    footer {
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .social-icons-footer {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 20px;
+    }
+    .social-icons-footer a {
+        color: #888;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    .social-icons-footer a:hover {
+        color: var(--color-primary);
+    }
+
+    .copyright-text {
+        font-size: 0.75rem;
+        color: #666;
+    }
+    
+    .copyright-text a {
+        color: inherit;
+        text-decoration: none;
+        font-size: inherit; 
+        font-weight: normal; 
+    }
+
+
+    /* Scroll Animation */
+    .scroll-animate {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .scroll-animate.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="assets/logo.jpg" alt="Logo" />
+    </div>
+
+    <div class="hamburger" onclick="openMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</header>
+
+<!-- FULLSCREEN MENU -->
+<div class="menu-overlay" id="menu">
+    <div class="close-icon" onclick="closeMenu()">×</div>
+    <a class="menu-item" href="index.html">Home</a>
+    <a class="menu-item" href="about.html">About</a>
+    <div class="menu-item" onclick="toggleSubmenu('info-sub')">Info</div>
+    <div id="info-sub" class="submenu">
+        <a href="faqs.html">Faqs</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="terms.html">Terms & Conditions</a>
+    </div>
+    <div class="menu-item" onclick="toggleSubmenu('services-sub')">Services</div>
+    <div id="services-sub" class="submenu">
+        <a href="maternity.html">Maternity</a>
+        <a href="new-borns.html">New Borns</a>
+        <a href="family.html">Family</a>
+        <a href="couples.html">Couples</a>
+        <a href="boudoir.html">Boudoir</a>
+        <a href="portrait.html">Portrait</a>
+        <a href="graduation.html">Graduation</a>
+        <a href="wedding.html">Intimate Wedding</a>
+    </div>
+    <a class="menu-item" href="book.html">Book A Session</a>
+    <a class="menu-item" href="blog.html">Blog</a>
+    <a class="menu-item" href="contact.html">Contact</a>
+</div>
+
+<!-- 1. PAGE TITLE / HERO SECTION -->
+<section class="book-hero scroll-animate">
+    <div class="book-hero-content">
+        <h1 class="book-hero-title">Start documenting your story</h1>
+    </div>
+</section>
+
+<!-- MAIN CONTENT WRAPPER -->
+<main class="book-main">
+    
+    <!-- 2. INTRO PARAGRAPH -->
+    <p class="intro-text scroll-animate">
+        Welcome to my world where I capture your moments through a lens. Whether it’s a milestone or just a moment in time, I’m here to document it beautifully. Book your session today.
+    </p>
+
+    <!-- 3 & 4. BOOKING CALENDAR AND FORM -->
+    <div class="booking-grid">
+        
+        <!-- CALENDAR -->
+        <div class="calendar-wrapper scroll-animate">
+            <div id="calendar-header">
+                <button id="prev-month-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                <span id="month-year-display"></span>
+                <button id="next-month-btn"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            <div id="calendar-body">
+                <div class="day-name">Sun</div>
+                <div class="day-name">Mon</div>
+                <div class="day-name">Tue</div>
+                <div class="day-name">Wed</div>
+                <div class="day-name">Thu</div>
+                <div class="day-name">Fri</div>
+                <div class="day-name">Sat</div>
+                <!-- Dates will be inserted here by JavaScript -->
+            </div>
+        </div>
+
+        <!-- BOOKING FORM -->
+        <div class="form-section scroll-animate">
+            <span class="form-label">Complete Your Details</span>
+            <!-- IMPORTANT: Replace 'YOUR_FORM_ID' with your actual Formspree ID -->
+            <form id="booking-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="booking-form">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="date-input">Selected Date *</label>
+                        <!-- Date will be populated by calendar selection -->
+                        <input type="text" id="date-input" name="Selected Date" placeholder="Select a date from the calendar" readonly required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time-input">Preferred Time *</label>
+                        <input type="time" id="time-input" name="Preferred Time" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="service-type">Type of Service *</label>
+                    <select id="service-type" name="Service Type" required>
+                        <option value="" disabled selected>Select a Service</option>
+                        <option value="Maternity">Maternity</option>
+                        <option value="New Borns">New Borns</option>
+                        <option value="Family">Family</option>
+                        <option value="Couples">Couples</option>
+                        <option value="Boudoir">Boudoir</option>
+                        <option value="Portrait">Portrait</option>
+                        <option value="Graduation">Graduation</option>
+                        <option value="Intimate Wedding">Intimate Wedding</option>
+                        <option value="Other">Other (Specify in Description)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="contact-form">
+                    <label for="name">Your Name *</label>
+                    <input type="text" id="name" name="Name" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="Phone">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Brief Description of Shoot (Themes, location ideas, number of people) *</label>
+                    <textarea id="description" name="Shoot Description" rows="4" required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Booking Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 5. IMPORTANT INFORMATION -->
+    <section class="important-info-section scroll-animate">
+        <h3 class="info-title">Important Information</h3>
+        <ul class="info-list">
+            <li>Booking requests are only the first step. Your session is only confirmed by the photographer after receiving the request and confirming date/time availability via email.</li>
+            <li>A non-refundable retainer fee (deposit) is required within 48 hours of confirmation to secure your date and time slot.</li>
+            <li>All packages and pricing details are available on the dedicated Pricing page. Please review them before submitting.</li>
+            <li>We recommend booking at least 4-6 weeks in advance, especially for newborn and weekend sessions.</li>
+            <li>By submitting this form, you agree to our Terms & Conditions (link available in the Info menu).</li>
+        </ul>
+    </section>
+</main>
+
+<!-- MARQUEE SECTION -->
+<div class="marquee-container scroll-animate">
+    <div class="marquee-content">
+        <span class="marquee-text">Art is not what you see, but what you make others see. Photography is the story I fail to put into words. &nbsp;&nbsp;&nbsp;</span>
+        <span class="marquee-text">Art is not what you see, but what you make others see. Photography is the story I fail to put into words. &nbsp;&nbsp;&nbsp;</span>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="social-icons-footer scroll-animate">
+        <a href="tel:+27833470218" aria-label="Call"><i class="fa-solid fa-phone"></i></a>
+        <a href="mailto:desmc@xsinet.co.za" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+        <a href="https://www.facebook.com/DesiMcCarthyPhotography" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/desi_mccarthy_photographic_art" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+    </div>
+
+    <div class="copyright-text scroll-animate">
+        Copyright &copy; Desi McCharthy Photographic Art | All Rights Reserved | Web Designs by 
+        <a href="https://webbytlotly.netlify.app" target="_blank" rel="noopener noreferrer">Tlotly</a>
+    </div>
+</footer>
+
+<script>
+    // --- Menu Logic ---
+    function openMenu() {
+        document.getElementById("menu").classList.add("open");
+    }
+    function closeMenu() {
+        document.getElementById("menu").classList.remove("open");
+    }
+    function toggleSubmenu(id) {
+        let submenu = document.getElementById(id);
+        submenu.style.display = submenu.style.display === "flex" ? "none" : "flex";
+    }
+
+    // --- Calendar Logic ---
+    let currentDate = new Date();
+    let currentMonth = currentDate.getMonth();
+    let currentYear = currentDate.getFullYear();
+    const today = new Date();
+    let selectedDate = null;
+
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    const monthYearDisplay = document.getElementById('month-year-display');
+    const calendarBody = document.getElementById('calendar-body');
+    const prevMonthBtn = document.getElementById('prev-month-btn');
+    const dateInput = document.getElementById('date-input');
+
+    function generateCalendar(month, year) {
+        // Clear previous calendar
+        const oldDates = calendarBody.querySelectorAll('.date-cell');
+        oldDates.forEach(cell => cell.remove());
+
+        // Get the first day of the month and number of days
+        const firstDayOfMonth = new Date(year, month, 1).getDay(); // 0 = Sunday, 6 = Saturday
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        // Update display title
+        monthYearDisplay.textContent = `${monthNames[month]} ${year}`;
+
+        // Disable previous button if it's the current month/year
+        const isCurrentMonth = month === today.getMonth() && year === today.getFullYear();
+        prevMonthBtn.disabled = isCurrentMonth;
+
+        // Add padding days for alignment
+        for (let i = 0; i < firstDayOfMonth; i++) {
+            const emptyCell = document.createElement('div');
+            emptyCell.classList.add('date-cell', 'inactive');
+            calendarBody.appendChild(emptyCell);
+        }
+
+        // Add actual day cells
+        for (let day = 1; day <= daysInMonth; day++) {
+            const date = new Date(year, month, day);
+            const dateCell = document.createElement('div');
+            dateCell.classList.add('date-cell');
+            dateCell.textContent = day;
+
+            const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+            const isPast = date < today && !isToday;
+
+            if (isToday) {
+                dateCell.classList.add('today');
+            }
+
+            // Disable past dates
+            if (isPast) {
+                dateCell.classList.add('inactive');
+            } else {
+                // Add click listener for future/current dates
+                dateCell.addEventListener('click', () => selectDate(dateCell, date));
+            }
+            
+            // Re-select if this date was previously selected
+            if (selectedDate && date.toDateString() === selectedDate.toDateString()) {
+                dateCell.classList.add('selected');
+            }
+
+            calendarBody.appendChild(dateCell);
+        }
+    }
+
+    function selectDate(clickedCell, date) {
+        // Deselect any currently selected cell
+        const currentlySelected = calendarBody.querySelector('.date-cell.selected');
+        if (currentlySelected) {
+            currentlySelected.classList.remove('selected');
+        }
+
+        // Select the new cell
+        clickedCell.classList.add('selected');
+        selectedDate = date;
+
+        // Format date as YYYY-MM-DD for consistency, and display it nicely
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        
+        // Update the form input field
+        dateInput.value = `${year}-${month}-${day} (Selected)`;
+        dateInput.setAttribute('data-value', `${year}-${month}-${day}`);
+    }
+    
+    // Function to handle month change
+    function changeMonth(delta) {
+        currentMonth += delta;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        } else if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        generateCalendar(currentMonth, currentYear);
+    }
+
+    // Attach event listeners to month navigation buttons
+    prevMonthBtn.addEventListener('click', () => changeMonth(-1));
+    document.getElementById('next-month-btn').addEventListener('click', () => changeMonth(1));
+
+    // Initialize calendar on load
+    generateCalendar(currentMonth, currentYear);
+
+    // --- Form Submission Overrides ---
+    // Since the display date is readonly, we need to ensure the hidden data-value is submitted.
+    const bookingForm = document.getElementById('booking-form');
+    bookingForm.addEventListener('submit', function(e) {
+        // If a date has been selected from the calendar
+        if (dateInput.hasAttribute('data-value')) {
+            // Create a hidden input field to submit the clean YYYY-MM-DD format
+            const cleanDate = dateInput.getAttribute('data-value');
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'Selected Date (Clean)';
+            hiddenInput.value = cleanDate;
+            bookingForm.appendChild(hiddenInput);
+            
+            // Ensure the main display input is also available
+            dateInput.value = dateInput.value.replace(' (Selected)', '');
+        } else if (!dateInput.value) {
+            // Prevent submission if no date is selected
+            e.preventDefault();
+            alert('Please select a date from the calendar.'); // Use custom modal in production!
+        }
+    });
+
+
+    // --- Scroll Fade-In Effect (Intersection Observer) ---
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const scrollObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.scroll-animate').forEach(section => {
+        // Skip header/menu which are visible immediately
+        if (section.id !== 'menu') {
+            scrollObserver.observe(section);
+        }
+    });
+</script>
+
+</body>
+</html>

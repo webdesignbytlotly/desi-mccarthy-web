@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pricing - Desi McCarthy</title>
+
+<!-- Load Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    /* Global Styles */
+    * {
+        box-sizing: border-box; 
+    }
+    
+    :root {
+        /* Reused Variables */
+        --font-base: clamp(1rem, 1.5vw, 1.15rem);
+        --font-large: clamp(1.2rem, 2.5vw, 1.5rem);
+        --font-heading: clamp(2.5rem, 6vw, 4rem);
+        --color-primary: #000;
+        --color-secondary: #333;
+        --color-background: #F5F2EB; 
+        --color-light-text: #F5F2EB; 
+        --color-accent: #C5985A; 
+    }
+
+    body {
+        margin: 0;
+        background: var(--color-background);
+        font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+        overflow-x: hidden; 
+        color: var(--color-primary);
+    }
+
+    p, a, h3, div, span, button, input, label, textarea, select {
+        font-size: var(--font-base);
+        line-height: 1.6;
+    }
+    
+    h1 {
+        /* Main page title for the section */
+        font-size: var(--font-heading);
+        font-weight: 300;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        color: var(--color-primary);
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    /* --- Header & Menu (Reused) --- */
+    header {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 20;
+        background: var(--color-background);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .logo img {
+        width: 150px;
+        height: auto;
+    }
+
+    .hamburger {
+        width: 70px;
+        height: 22px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+        margin-right: 10px;
+    }
+
+    .hamburger span {
+        width: 50%;
+        height: 2px;
+        background: var(--color-primary);
+        display: block;
+        border-radius: 1px;
+        transition: 0.3s;
+    }
+
+    .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: var(--color-background);
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+    }
+
+    .menu-overlay.open {
+        display: flex;
+        opacity: 1;
+    }
+
+    .close-icon {
+        position: absolute;
+        top: 22px;
+        right: 25px;
+        font-size: 40px;
+        color: var(--color-primary);
+        cursor: pointer;
+        display: block;
+        font-weight: 200; 
+        line-height: 1; 
+    }
+
+    .menu-item {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        margin: 14px 0;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--color-primary);
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 300;
+    }
+
+    .submenu {
+        display: none;
+        flex-direction: column;
+        margin-top: 6px;
+    }
+
+    .submenu a {
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        margin: 6px 0;
+        color: var(--color-primary);
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: 300;
+        letter-spacing: 1px;
+    }
+
+    /* --- PRICING PAGE SPECIFIC STYLES --- */
+    
+    .pricing-main {
+        padding-top: 120px; /* Space for the fixed header */
+        padding-bottom: 80px;
+    }
+    
+    .pricing-wrapper {
+        max-width: 900px;
+        margin: 0 auto; 
+        padding: 0 20px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .pricing-text {
+        font-size: var(--font-large);
+        color: var(--color-secondary);
+        line-height: 1.8;
+        max-width: 800px;
+    }
+
+    .contact-btn {
+        margin-top: 20px;
+        padding: 18px 50px;
+        background: transparent;
+        border: 2px solid var(--color-primary);
+        color: var(--color-primary);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .contact-btn:hover {
+        background: var(--color-primary);
+        color: var(--color-background);
+    }
+
+    .divider-line {
+        width: 100px;
+        height: 1px;
+        background-color: var(--color-primary);
+        margin: 10px auto 30px auto;
+    }
+
+    /* --- MARQUEE & FOOTER (Reused) --- */
+    .marquee-container {
+        margin: 0; 
+        overflow: hidden;
+        background: var(--color-primary);
+        padding: 15px 0;
+    }
+
+    .marquee-content {
+        display: flex;
+        width: fit-content; 
+        animation: scroll-left 30s linear infinite;
+        white-space: nowrap;
+    }
+
+    .marquee-text {
+        font-size: clamp(1.1rem, 3vw, 1.5rem);
+        color: var(--color-background);
+        letter-spacing: 2px;
+        padding-right: 50px;
+        text-transform: uppercase;
+        flex-shrink: 0; 
+    }
+
+    @keyframes scroll-left {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-50%); } 
+    }
+
+    footer {
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .social-icons-footer {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 20px;
+    }
+    .social-icons-footer a {
+        color: #888;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    .social-icons-footer a:hover {
+        color: var(--color-primary);
+    }
+
+    .copyright-text {
+        font-size: 0.75rem;
+        color: #666;
+    }
+    
+    .copyright-text a {
+        color: inherit;
+        text-decoration: none;
+        font-size: inherit; 
+        font-weight: normal; 
+    }
+
+    /* Scroll Animation */
+    .scroll-animate {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .scroll-animate.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="assets/logo.jpg" alt="Logo" />
+    </div>
+
+    <div class="hamburger" onclick="openMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</header>
+
+<!-- FULLSCREEN MENU -->
+<div class="menu-overlay" id="menu">
+    <div class="close-icon" onclick="closeMenu()">×</div>
+    <a class="menu-item" href="index.html">Home</a>
+    <a class="menu-item" href="about.html">About</a>
+    <div class="menu-item" onclick="toggleSubmenu('info-sub')">Info</div>
+    <div id="info-sub" class="submenu">
+        <a href="faqs.html">Faqs</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="terms.html">Terms & Conditions</a>
+    </div>
+    <div class="menu-item" onclick="toggleSubmenu('services-sub')">Services</div>
+    <div id="services-sub" class="submenu">
+        <a href="maternity.html">Maternity</a>
+        <a href="new-borns.html">New Borns</a>
+        <a href="family.html">Family</a>
+        <a href="couples.html">Couples</a>
+        <a href="boudoir.html">Boudoir</a>
+        <a href="portrait.html">Portrait</a>
+        <a href="graduation.html">Graduation</a>
+        <a href="intimate-weddings.html">Intimate Wedding</a>
+    </div>
+    <a class="menu-item" href="book.html">Book A Session</a>
+    <a class="menu-item" href="blog.html">Blog</a>
+    <a class="menu-item" href="contact.html">Contact</a>
+</div>
+
+<!-- MAIN CONTENT -->
+<main class="pricing-main">
+    
+    <h1 class="scroll-animate">Pricing</h1>
+
+    <div class="pricing-wrapper">
+        
+        <div class="scroll-animate">
+            <div class="divider-line"></div>
+            <p class="pricing-text">
+                I believe that photography is an investment in your memories. Each session is unique, and I strive to create a package that perfectly fits your vision and needs.
+            </p>
+            <p class="pricing-text">
+                To receive a detailed pricing guide tailored to the type of session you are interested in, please visit my contact page and send me a message. I would love to hear more about your story and discuss how we can capture it together.
+            </p>
+        </div>
+
+        <a href="contact.html" class="contact-btn scroll-animate">Request Pricing</a>
+
+    </div>
+
+</main>
+
+<!-- MARQUEE SECTION -->
+<div class="marquee-container scroll-animate">
+    <div class="marquee-content">
+        <span class="marquee-text">Invest in memories that last a lifetime. Contact us for a personalized quote today. &nbsp;&nbsp;&nbsp;</span>
+        <span class="marquee-text">Invest in memories that last a lifetime. Contact us for a personalized quote today. &nbsp;&nbsp;&nbsp;</span>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="social-icons-footer scroll-animate">
+        <a href="tel:+27833470218" aria-label="Call"><i class="fa-solid fa-phone"></i></a>
+        <a href="mailto:desmc@xsinet.co.za" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+        <a href="https://www.facebook.com/DesiMcCarthyPhotography" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/desi_mccarthy_photographic_art" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+    </div>
+
+    <div class="copyright-text scroll-animate">
+        Copyright &copy; Desi McCharthy Photographic Art | All Rights Reserved | Web Designs by 
+        <a href="webbytlotly.netlify.app" target="_blank" rel="noopener noreferrer">Tlotly</a>
+    </div>
+</footer>
+
+<script>
+    // --- Menu Logic ---
+    function openMenu() {
+        document.getElementById("menu").classList.add("open");
+    }
+    function closeMenu() {
+        document.getElementById("menu").classList.remove("open");
+    }
+    function toggleSubmenu(id) {
+        let submenu = document.getElementById(id);
+        submenu.style.display = submenu.style.display === "flex" ? "none" : "flex";
+    }
+    
+    // --- Scroll Fade-In Effect ---
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const scrollObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.scroll-animate').forEach(section => {
+        if (section.id !== 'menu') {
+            scrollObserver.observe(section);
+        }
+    });
+</script>
+
+</body>
+</html>

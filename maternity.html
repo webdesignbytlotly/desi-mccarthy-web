@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Maternity Photography - Desi McCarthy</title>
+
+<!-- Load Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    /* FIX: Added box-sizing: border-box to prevent content overflow and zoom issues */
+    * {
+        box-sizing: border-box; 
+    }
+    
+    :root {
+        /* Reuse variables for consistency */
+        --font-base: clamp(1rem, 1.5vw, 1.15rem);
+        --font-large: clamp(1.2rem, 2.5vw, 1.5rem);
+        --font-heading: clamp(2.5rem, 6vw, 4rem);
+        --color-primary: #000;
+        --color-secondary: #333;
+        --color-background: #F5F2EB;
+        --color-light-text: #F5F2EB; 
+        
+        /* Specific colors for Maternity Page */
+        --color-process-bg: #C1C7C5; /* Light gray/taupe for the process section */
+        --color-gallery-bg: #808886; /* Darker gray/green for the gallery section */
+    }
+
+    body {
+        margin: 0;
+        background: var(--color-background);
+        font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+        overflow-x: hidden; /* Ensure no unintended horizontal scrolling */
+    }
+
+    p, a, h1, h3, div, span, button, input, label, textarea, select {
+        font-size: var(--font-base);
+        line-height: 1.6;
+    }
+    
+    h2 {
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        font-weight: 300;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 30px;
+    }
+
+    /* --- Header & Menu (Reused) --- */
+    header {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 20;
+        background: var(--color-background);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .logo img {
+        width: 150px;
+        height: auto;
+    }
+
+    .hamburger {
+        width: 70px;
+        height: 22px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+        margin-right: 10px;
+    }
+
+    .hamburger span {
+        width: 50%;
+        height: 2px;
+        background: var(--color-primary);
+        display: block;
+        border-radius: 1px;
+        transition: 0.3s;
+    }
+
+    .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: var(--color-background);
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+    }
+
+    .menu-overlay.open {
+        display: flex;
+        opacity: 1;
+    }
+
+    .close-icon {
+        position: absolute;
+        top: 22px;
+        right: 25px;
+        font-size: 40px;
+        color: var(--color-primary);
+        cursor: pointer;
+        display: block;
+        font-weight: 200; 
+        line-height: 1; 
+    }
+
+    .menu-item {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        margin: 14px 0;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--color-primary);
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 300;
+    }
+
+    .submenu {
+        display: none;
+        flex-direction: column;
+        margin-top: 6px;
+    }
+
+    .submenu a {
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        margin: 6px 0;
+        color: var(--color-primary);
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: 300;
+        letter-spacing: 1px;
+    }
+
+    /* --- MATERNITY PAGE SPECIFIC STYLES --- */
+    
+    .maternity-main {
+        padding-top: 80px; /* Clear space for fixed header */
+    }
+
+    /* 1. Hero Slideshow Section */
+    .hero-slideshow {
+        position: relative;
+        width: 100%;
+        height: 70vh; 
+        min-height: 550px;
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center; 
+        justify-content: flex-start; 
+        transition: background-image 1s ease-in-out;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: transparent; 
+        display: flex;
+        justify-content: flex-start; 
+        align-items: center;
+        text-align: left;
+        padding: 20px 40px; 
+    }
+
+    .hero-quote {
+        font-size: clamp(2rem, 6vw, 4rem);
+        font-weight: 300; 
+        color: var(--color-light-text);
+        margin: 0;
+        line-height: 1.3;
+        max-width: 800px;
+        text-shadow: none; 
+    }
+
+    /* 2. Intro Section */
+    .intro-section {
+        max-width: 1000px;
+        margin: 80px auto;
+        padding: 0 20px;
+        text-align: left;
+        color: var(--color-secondary);
+    }
+    
+    .intro-section p {
+        font-size: var(--font-large);
+        margin-bottom: 20px;
+    }
+    
+    /* 3. GALLERY SECTION (Background: #808886) */
+    .gallery-section {
+        background-color: var(--color-gallery-bg);
+        padding: 80px 20px;
+        color: var(--color-light-text);
+        text-align: center;
+    }
+    
+    .gallery-content {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 40px;
+    }
+    
+    .gallery-item img {
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: cover;
+        border-radius: 4px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        transition: transform 0.3s;
+    }
+    
+    .gallery-item img:hover {
+        transform: scale(1.02);
+    }
+
+    /* 4. PROCESS AND TIPS SECTION (Background: #C1C7C5) */
+    .process-section {
+        background-color: var(--color-process-bg);
+        padding: 80px 20px;
+        color: var(--color-primary);
+        text-align: left;
+    }
+    
+    .process-content {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .process-list {
+        list-style: none;
+        padding: 0;
+        margin: 40px 0;
+    }
+    
+    /* Clean List Styles */
+    .process-list li {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 30px; 
+        padding: 0;
+        background: transparent; 
+        border-radius: 0;
+        box-shadow: none; 
+        border: none; 
+    }
+    
+    .process-list li:hover {
+        transform: none; 
+    }
+    
+    .process-icon {
+        font-size: 1.5rem;
+        margin-right: 25px;
+        flex-shrink: 0;
+        color: var(--color-light-text); /* White icon */
+        background: var(--color-primary); /* Black circle */
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 5px; 
+    }
+    
+    .process-text {
+        color: var(--color-primary); /* Black text on light background */
+        background: transparent; 
+        padding: 0;
+        border-radius: 0;
+        width: 100%;
+    }
+    
+    .process-text strong {
+        display: block;
+        font-size: var(--font-large);
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    /* How to Book Button */
+    .book-link {
+        display: inline-block;
+        margin-top: 30px;
+        padding: 15px 40px;
+        background: var(--color-primary);
+        color: var(--color-light-text);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-decoration: none;
+        border: 2px solid var(--color-primary);
+        transition: background 0.3s, color 0.3s;
+    }
+    
+    .book-link:hover {
+        background: var(--color-background);
+        color: var(--color-primary);
+    }
+
+    /* --- MARQUEE & FOOTER (Reused) --- */
+    .marquee-container {
+        margin: 0; 
+        overflow: hidden;
+        background: var(--color-primary);
+        padding: 15px 0;
+    }
+
+    .marquee-content {
+        display: flex;
+        width: fit-content; 
+        animation: scroll-left 30s linear infinite;
+        white-space: nowrap;
+    }
+
+    .marquee-text {
+        font-size: clamp(1.1rem, 3vw, 1.5rem);
+        color: var(--color-background);
+        letter-spacing: 2px;
+        padding-right: 50px;
+        text-transform: uppercase;
+        flex-shrink: 0; 
+    }
+
+    @keyframes scroll-left {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-50%); } 
+    }
+
+    footer {
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .social-icons-footer {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 20px;
+    }
+    .social-icons-footer a {
+        color: #888;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    .social-icons-footer a:hover {
+        color: var(--color-primary);
+    }
+
+    .copyright-text {
+        font-size: 0.75rem;
+        color: #666;
+    }
+    
+    .copyright-text a {
+        color: inherit;
+        text-decoration: none;
+        font-size: inherit; 
+        font-weight: normal; 
+    }
+
+
+    /* Scroll Animation */
+    .scroll-animate {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .scroll-animate.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="assets/logo.jpg" alt="Logo" />
+    </div>
+
+    <div class="hamburger" onclick="openMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</header>
+
+<!-- FULLSCREEN MENU -->
+<div class="menu-overlay" id="menu">
+    <div class="close-icon" onclick="closeMenu()">×</div>
+    <a class="menu-item" href="index.html">Home</a>
+    <a class="menu-item" href="about.html">About</a>
+    <div class="menu-item" onclick="toggleSubmenu('info-sub')">Info</div>
+    <div id="info-sub" class="submenu">
+        <a href="faqs.html">Faqs</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="terms.html">Terms & Conditions</a>
+    </div>
+    <div class="menu-item" onclick="toggleSubmenu('services-sub')">Services</div>
+    <div id="services-sub" class="submenu">
+        <a href="maternity.html">Maternity</a>
+        <a href="new-borns.html">New Borns</a>
+        <a href="family.html">Family</a>
+        <a href="couples.html">Couples</a>
+        <a href="boudoir.html">Boudoir</a>
+        <a href="portrait.html">Portrait</a>
+        <a href="graduation.html">Graduation</a>
+        <a href="wedding.html">Intimate Wedding</a>
+    </div>
+    <a class="menu-item" href="book.html">Book A Session</a>
+    <a class="menu-item" href="blog.html">Blog</a>
+    <a class="menu-item" href="contact.html">Contact</a>
+</div>
+
+<main class="maternity-main">
+    
+    <!-- 1. HERO SLIDESHOW SECTION -->
+    <section class="hero-slideshow scroll-animate" id="maternity-hero">
+        <div class="hero-overlay">
+            <h1 class="hero-quote">
+                "Embracing the beautiful pause before life takes flight."
+            </h1>
+        </div>
+    </section>
+
+    <!-- 2. INTRO SECTION -->
+    <section class="intro-section scroll-animate">
+        <h2>Celebrating Motherhood</h2>
+        <p>Maternity is a time of incredible transformation and anticipation. It is the shortest chapter of your story, yet arguably the most profound. My goal is to capture the grace, strength, and pure joy of this journey.</p>
+        <p>These sessions are tailored to make you feel comfortable, beautiful, and empowered. Whether we shoot outdoors during golden hour or in the calm intimacy of the studio, we focus on the connection you share with your baby, preserving the stunning visual memory of your pregnancy.</p>
+    </section>
+
+    <!-- 3. GALLERY SECTION (Background: #808886) -->
+    <section class="gallery-section">
+        <div class="gallery-content scroll-animate">
+            <h2>Gallery of Expectation</h2>
+            
+            <div class="gallery-grid">
+                <!-- NOTE: Replace these with actual maternity images -->
+                <div class="gallery-item"><img src="assets/maternity1.jpg" alt="Maternity shoot outdoors"></div>
+                <div class="gallery-item"><img src="assets/maternity2.jpg" alt="Close-up of baby bump with hands"></div>
+                <div class="gallery-item"><img src="assets/maternity3.jpg" alt="Couple maternity pose"></div>
+                <div class="gallery-item"><img src="assets/maternity4.jpg" alt="Studio maternity portrait"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. PROCESS AND TIPS SECTION (Background: #C1C7C5) -->
+    <section class="process-section">
+        <div class="process-content scroll-animate">
+            <h2>Maternity Session Tips & Preparation</h2>
+            <p style="color: var(--color-primary); font-weight: 500; margin-bottom: 40px;">To ensure the most comfortable and memorable session, here are a few tips to help you prepare for your maternity shoot.</p>
+            
+            <ul class="process-list">
+                <li class="scroll-animate">
+                    <div class="process-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                    <div class="process-text">
+                        <strong>Optimal Timing (28-34 Weeks)</strong>
+                        The ideal time for your maternity session is between 28 and 34 weeks. Your bump will be beautifully rounded, and you'll typically feel most energetic and comfortable for posing.
+                    </div>
+                </li>
+                <li class="scroll-animate">
+                    <div class="process-icon"><i class="fa-solid fa-shirt"></i></div>
+                    <div class="process-text">
+                        <strong>Wardrobe Consultation</strong>
+                        I offer a selection of flowing gowns and fabrics perfect for maternity portraits. We will have a consultation beforehand to discuss your preferred style, location, and the outfits that best showcase your pregnancy glow.
+                    </div>
+                </li>
+                <li class="scroll-animate">
+                    <div class="process-icon"><i class="fa-solid fa-palette"></i></div>
+                    <div class="process-text">
+                        <strong>Hair and Makeup</strong>
+                        Consider scheduling professional hair and makeup. This not only enhances your look but serves as a relaxing treat before the session, boosting your confidence for the camera.
+                    </div>
+                </li>
+                <li class="scroll-animate">
+                    <div class="process-icon"><i class="fa-solid fa-ring"></i></div>
+                    <div class="process-text">
+                        <strong>Involve the Family</strong>
+                        Partners and older siblings are highly encouraged to participate! These images celebrate your growing family, creating beautiful connections and anticipation of the new arrival.
+                    </div>
+                </li>
+                <li class="scroll-animate">
+                    <div class="process-icon"><i class="fa-solid fa-sun"></i></div>
+                    <div class="process-text">
+                        <strong>Choosing the Light</strong>
+                        For outdoor sessions, we prioritize the 'golden hour' (shortly after sunrise or before sunset) to utilize soft, warm, and flattering light that enhances the beautiful silhouette of your pregnancy.
+                    </div>
+                </li>
+            </ul>
+
+            <h3 style="color: var(--color-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 50px;">Ready to Book?</h3>
+            <p style="color: var(--color-primary);">Booking early ensures we can reserve the optimal time slot for your session and allows plenty of time for wardrobe and location planning. Let's create something magical!</p>
+            <a href="book.html" class="book-link scroll-animate">Book Your Session</a>
+        </div>
+    </section>
+
+</main>
+
+<!-- MARQUEE SECTION -->
+<div class="marquee-container scroll-animate">
+    <div class="marquee-content">
+        <span class="marquee-text">Art is not what you see, but what you make others see. Photography is the story I fail to put into words. &nbsp;&nbsp;&nbsp;</span>
+        <span class="marquee-text">Art is not what you see, but what you make others see. Photography is the story I fail to put into words. &nbsp;&nbsp;&nbsp;</span>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="social-icons-footer scroll-animate">
+        <a href="tel:+27833470218" aria-label="Call"><i class="fa-solid fa-phone"></i></a>
+        <a href="mailto:desmc@xsinet.co.za" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+        <a href="https://www.facebook.com/DesiMcCarthyPhotography" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/desi_mccarthy_photographic_art" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+    </div>
+
+    <div class="copyright-text scroll-animate">
+        Copyright &copy; Desi McCharthy Photographic Art | All Rights Reserved | Web Designs by 
+        <a href="webbytlotly.netlify.app" target="_blank" rel="noopener noreferrer">Tlotly</a>
+    </div>
+</footer>
+
+<script>
+    // --- Menu Logic ---
+    function openMenu() {
+        document.getElementById("menu").classList.add("open");
+    }
+    function closeMenu() {
+        document.getElementById("menu").classList.remove("open");
+    }
+    function toggleSubmenu(id) {
+        let submenu = document.getElementById(id);
+        submenu.style.display = submenu.style.display === "flex" ? "none" : "flex";
+    }
+    
+    // --- Hero Slideshow Logic ---
+    const images = [
+        'assets/maternity1.jpg',
+        'assets/maternity2.jpg',
+        'assets/maternity3.jpg',
+        'assets/maternity4.jpg'
+    ];
+    let currentIndex = 0;
+    const heroElement = document.getElementById('maternity-hero');
+
+    function updateSlideshow() {
+        // NOTE: These image paths are placeholders and should be replaced with actual maternity photos.
+        const nextImage = new Image();
+        nextImage.src = images[currentIndex];
+        
+        nextImage.onload = () => {
+            heroElement.style.backgroundImage = `url('${images[currentIndex]}')`;
+            currentIndex = (currentIndex + 1) % images.length;
+        };
+    }
+
+    // Start the slideshow and change image every 5 seconds (5000ms)
+    updateSlideshow(); 
+    setInterval(updateSlideshow, 5000); 
+
+    // --- Scroll Fade-In Effect (Intersection Observer) ---
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const scrollObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.scroll-animate').forEach(section => {
+        if (section.id !== 'menu') {
+            scrollObserver.observe(section);
+        }
+    });
+</script>
+
+</body>
+</html>

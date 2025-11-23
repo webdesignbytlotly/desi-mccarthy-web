@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Terms & Conditions - Desi McCarthy</title>
+
+<!-- Load Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    /* Global Styles */
+    * {
+        box-sizing: border-box; 
+    }
+    
+    :root {
+        /* Reused Variables */
+        --font-base: clamp(1rem, 1.5vw, 1.15rem);
+        --font-large: clamp(1.2rem, 2.5vw, 1.5rem);
+        --color-primary: #000;
+        --color-secondary: #333;
+        --color-background: #F5F2EB; /* Main page cream/greige */
+        --color-light-text: #F5F2EB; 
+        
+        /* Specific colors for this page - keeping it neutral for legal text */
+        --color-accent: var(--color-primary); 
+        --color-section-bg: #FFFFFF; /* Retaining this variable but not using it for the content area */
+    }
+
+    body {
+        margin: 0;
+        background: var(--color-background);
+        font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+        overflow-x: hidden; 
+        color: var(--color-primary);
+    }
+
+    p, a, h3, div, span, button, input, label, textarea, select {
+        font-size: var(--font-base);
+        line-height: 1.6;
+    }
+    
+    h1 {
+        /* Main page title for the section */
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        font-weight: 300;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 50px;
+        color: var(--color-primary);
+        text-align: center;
+    }
+    
+    h2 {
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        font-weight: 300;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 30px;
+    }
+    
+    h3 {
+        font-size: var(--font-large);
+        font-weight: 600;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        padding-bottom: 5px;
+    }
+
+    /* --- Header & Menu (Reused) --- */
+    header {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 20;
+        background: var(--color-background);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .logo img {
+        width: 150px;
+        height: auto;
+    }
+
+    .hamburger {
+        width: 70px;
+        height: 22px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+        margin-right: 10px;
+    }
+
+    .hamburger span {
+        width: 50%;
+        height: 2px;
+        background: var(--color-primary);
+        display: block;
+        border-radius: 1px;
+        transition: 0.3s;
+    }
+
+    .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: var(--color-background);
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+    }
+
+    .menu-overlay.open {
+        display: flex;
+        opacity: 1;
+    }
+
+    .close-icon {
+        position: absolute;
+        top: 22px;
+        right: 25px;
+        font-size: 40px;
+        color: var(--color-primary);
+        cursor: pointer;
+        display: block;
+        font-weight: 200; 
+        line-height: 1; 
+    }
+
+    .menu-item {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        margin: 14px 0;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--color-primary);
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 300;
+    }
+
+    .submenu {
+        display: none;
+        flex-direction: column;
+        margin-top: 6px;
+    }
+
+    .submenu a {
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        margin: 6px 0;
+        color: var(--color-primary);
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: 300;
+        letter-spacing: 1px;
+    }
+
+    /* --- TERMS PAGE SPECIFIC STYLES --- */
+    
+    .terms-main {
+        padding-top: 120px; /* More space for the main title */
+        padding-bottom: 80px;
+    }
+
+    .terms-content {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px 30px;
+        /* --- MODIFIED: Removed white background, shadow, and border-radius --- */
+        /* background: var(--color-section-bg); */
+        /* border-radius: 8px; */
+        /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); */
+        /* --- END MODIFIED --- */
+    }
+    
+    .terms-content ol, .terms-content ul {
+        padding-left: 20px;
+    }
+    
+    .terms-content li {
+        margin-bottom: 10px;
+    }
+    
+    .effective-date {
+        text-align: right;
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 20px;
+    }
+    
+
+    /* --- MARQUEE & FOOTER (Reused) --- */
+    .marquee-container {
+        margin: 0; 
+        overflow: hidden;
+        background: var(--color-primary);
+        padding: 15px 0;
+    }
+
+    .marquee-content {
+        display: flex;
+        width: fit-content; 
+        animation: scroll-left 30s linear infinite;
+        white-space: nowrap;
+    }
+
+    .marquee-text {
+        font-size: clamp(1.1rem, 3vw, 1.5rem);
+        color: var(--color-background);
+        letter-spacing: 2px;
+        padding-right: 50px;
+        text-transform: uppercase;
+        flex-shrink: 0; 
+    }
+
+    @keyframes scroll-left {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-50%); } 
+    }
+
+    footer {
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .social-icons-footer {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 20px;
+    }
+    .social-icons-footer a {
+        color: #888;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    .social-icons-footer a:hover {
+        color: var(--color-primary);
+    }
+
+    .copyright-text {
+        font-size: 0.75rem;
+        color: #666;
+    }
+    
+    .copyright-text a {
+        color: inherit;
+        text-decoration: none;
+        font-size: inherit; 
+        font-weight: normal; 
+    }
+
+    /* Scroll Animation */
+    .scroll-animate {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .scroll-animate.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="assets/logo.jpg" alt="Logo" />
+    </div>
+
+    <div class="hamburger" onclick="openMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</header>
+
+<!-- FULLSCREEN MENU -->
+<div class="menu-overlay" id="menu">
+    <div class="close-icon" onclick="closeMenu()">×</div>
+    <a class="menu-item" href="index.html">Home</a>
+    <a class="menu-item" href="about.html">About</a>
+    <div class="menu-item" onclick="toggleSubmenu('info-sub')">Info</div>
+    <div id="info-sub" class="submenu">
+        <a href="faqs.html">Faqs</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="terms.html">Terms & Conditions</a>
+    </div>
+    <div class="menu-item" onclick="toggleSubmenu('services-sub')">Services</div>
+    <div id="services-sub" class="submenu">
+        <a href="maternity.html">Maternity</a>
+        <a href="new-borns.html">New Borns</a>
+        <a href="family.html">Family</a>
+        <a href="couples.html">Couples</a>
+        <a href="boudoir.html">Boudoir</a>
+        <a href="portrait.html">Portrait</a>
+        <a href="graduation.html">Graduation</a>
+        <a href="intimate-weddings.html">Intimate Wedding</a>
+    </div>
+    <a class="menu-item" href="book.html">Book A Session</a>
+    <a class="menu-item" href="blog.html">Blog</a>
+    <a class="menu-item" href="contact.html">Contact</a>
+</div>
+
+<main class="terms-main">
+    
+    <h1 class="scroll-animate">Terms & Conditions of Service</h1>
+
+    <section class="terms-content scroll-animate">
+        <p class="effective-date">Effective Date: November 21, 2025</p>
+
+        <p>By booking a session or engaging in any service with Desi McCarthy Photographic Art ("The Photographer"), you ("The Client") agree to be bound by these Terms and Conditions.</p>
+
+        <h3>1. Booking and Payments</h3>
+        <ol>
+            <li><strong>Deposit:</strong> A non-refundable booking deposit (specified during the initial consultation) is required to secure your session date and time.</li>
+            <li><strong>Balance:</strong> The remaining balance of the session fee is due in full at least 48 hours before the scheduled session date.</li>
+            <li><strong>Forms of Payment:</strong> The Photographer accepts payment via EFT/Bank Transfer or other agreed-upon electronic methods.</li>
+        </ol>
+
+        <h3>2. Cancellations and Rescheduling</h3>
+        <ol>
+            <li><strong>Client Cancellation:</strong> If The Client cancels the session, the booking deposit is non-refundable.</li>
+            <li><strong>Rescheduling:</strong> Sessions may be rescheduled once, provided the Client gives a minimum of 7 days' notice. Rescheduling is subject to The Photographer's availability.</li>
+            <li><strong>Photographer Cancellation:</strong> In the unlikely event The Photographer must cancel, The Client will be offered an immediate reschedule or a full refund of all payments made.</li>
+        </ol>
+
+        <h3>3. Copyright and Usage</h3>
+        <ol>
+            <li><strong>Copyright:</strong> The Photographer retains the exclusive copyright to all images produced. No images may be reproduced, sold, or published without the express written permission of The Photographer.</li>
+            <li><strong>Print Release:</strong> Upon final payment, The Client receives a limited print release allowing for personal printing and sharing of the purchased digital files. This does not transfer copyright.</li>
+            <li><strong>Model Release:</strong> The Client grants The Photographer the right to use the images for promotional, advertising, and marketing purposes, including portfolio, website, social media, and competition entries, unless a separate agreement for non-publication is signed.</li>
+        </ol>
+        
+        <h3>4. Final Images and Delivery</h3>
+        <ol>
+            <li><strong>Editing:</strong> All images delivered to The Client will be professionally edited and retouched according to The Photographer’s artistic style. Unedited, raw, or unretouched files will not be provided.</li>
+            <li><strong>Delivery Time:</strong> The final gallery delivery timeframe is approximately 2-4 weeks for standard sessions and 4-8 weeks for intimate weddings, starting from the date the client finalizes their selection (if applicable).</li>
+            <li><strong>Archival:</strong> The Photographer will archive the finished images for a period of 6 months following delivery. It is The Client’s responsibility to back up their files.</li>
+        </ol>
+
+        <h3>5. Client Responsibilities</h3>
+        <ol>
+            <li><strong>Appearance:</strong> The Client is responsible for their own grooming, wardrobe, and preparedness for the session.</li>
+            <li><strong>Cooperation:</strong> The Client agrees to cooperate and arrive on time. Any delay caused by The Client will result in a corresponding reduction in the shooting time.</li>
+            <li><strong>Safety:</strong> The Client is responsible for their own safety and the safety of any accompanying individuals or minors during the session.</li>
+        </ol>
+        
+        <h3>6. Limitation of Liability</h3>
+        <p>In the event of unforeseen circumstances (including but not limited to equipment failure, injury, or loss of memory cards), The Photographer's liability is limited to the refund of all moneys paid to date.</p>
+
+        <p style="margin-top: 40px; text-align: center;">By proceeding with a booking, The Client acknowledges and accepts these Terms and Conditions.</p>
+
+    </section>
+
+</main>
+
+<!-- MARQUEE SECTION -->
+<div class="marquee-container scroll-animate">
+    <div class="marquee-content">
+        <span class="marquee-text">Booking deposits are non-refundable and secure your date with the Photographer. &nbsp;&nbsp;&nbsp;</span>
+        <span class="marquee-text">Booking deposits are non-refundable and secure your date with the Photographer. &nbsp;&nbsp;&nbsp;</span>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="social-icons-footer scroll-animate">
+        <a href="tel:+27833470218" aria-label="Call"><i class="fa-solid fa-phone"></i></a>
+        <a href="mailto:desmc@xsinet.co.za" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+        <a href="https://www.facebook.com/DesiMcCarthyPhotography" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/desi_mccarthy_photographic_art" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+    </div>
+
+    <div class="copyright-text scroll-animate">
+        Copyright &copy; Desi McCharthy Photographic Art | All Rights Reserved | Web Designs by 
+        <a href="webbytlotly.netlify.app" target="_blank" rel="noopener noreferrer">Tlotly</a>
+    </div>
+</footer>
+
+<script>
+    // --- Menu Logic ---
+    function openMenu() {
+        document.getElementById("menu").classList.add("open");
+    }
+    function closeMenu() {
+        document.getElementById("menu").classList.remove("open");
+    }
+    function toggleSubmenu(id) {
+        let submenu = document.getElementById(id);
+        submenu.style.display = submenu.style.display === "flex" ? "none" : "flex";
+    }
+    
+    // --- Scroll Fade-In Effect (Intersection Observer) ---
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const scrollObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.scroll-animate').forEach(section => {
+        if (section.id !== 'menu') {
+            scrollObserver.observe(section);
+        }
+    });
+</script>
+
+</body>
+</html>

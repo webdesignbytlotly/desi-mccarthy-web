@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Family Photography - Desi McCarthy</title>
+
+<!-- Load Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    /* Global Fix: Added box-sizing: border-box to prevent content overflow and zoom issues */
+    * {
+        box-sizing: border-box; 
+    }
+    
+    :root {
+        /* Reuse variables for consistency */
+        --font-base: clamp(1rem, 1.5vw, 1.15rem);
+        --font-large: clamp(1.2rem, 2.5vw, 1.5rem);
+        --font-heading: clamp(2.5rem, 6vw, 4rem);
+        --color-primary: #000;
+        --color-secondary: #333;
+        --color-background: #F5F2EB;
+        --color-light-text: #F5F2EB; 
+        
+        /* Specific colors for Family Page */
+        --color-process-bg: #E2DFD6; /* Light taupe for the process section */
+        --color-gallery-bg: #554D4A; /* Dark brown/gray for the gallery section */
+    }
+
+    body {
+        margin: 0;
+        background: var(--color-background);
+        font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+        overflow-x: hidden; /* Ensure no unintended horizontal scrolling */
+    }
+
+    p, a, h1, h3, div, span, button, input, label, textarea, select {
+        font-size: var(--font-base);
+        line-height: 1.6;
+    }
+    
+    h2 {
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        font-weight: 300;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 30px;
+    }
+
+    /* --- Header & Menu (Reused) --- */
+    header {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 20;
+        background: var(--color-background);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .logo img {
+        width: 150px;
+        height: auto;
+    }
+
+    .hamburger {
+        width: 70px;
+        height: 22px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+        margin-right: 10px;
+    }
+
+    .hamburger span {
+        width: 50%;
+        height: 2px;
+        background: var(--color-primary);
+        display: block;
+        border-radius: 1px;
+        transition: 0.3s;
+    }
+
+    .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: var(--color-background);
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+    }
+
+    .menu-overlay.open {
+        display: flex;
+        opacity: 1;
+    }
+
+    .close-icon {
+        position: absolute;
+        top: 22px;
+        right: 25px;
+        font-size: 40px;
+        color: var(--color-primary);
+        cursor: pointer;
+        display: block;
+        font-weight: 200; 
+        line-height: 1; 
+    }
+
+    .menu-item {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        margin: 14px 0;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--color-primary);
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 300;
+    }
+
+    .submenu {
+        display: none;
+        flex-direction: column;
+        margin-top: 6px;
+    }
+
+    .submenu a {
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        margin: 6px 0;
+        color: var(--color-primary);
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: 300;
+        letter-spacing: 1px;
+    }
+
+    /* --- FAMILY PAGE SPECIFIC STYLES --- */
+    
+    .family-main {
+        padding-top: 80px; /* Clear space for fixed header */
+    }
+
+    /* 1. Hero Slideshow Section */
+    .hero-slideshow {
+        position: relative;
+        width: 100%;
+        height: 70vh; 
+        min-height: 550px;
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center; 
+        justify-content: flex-start; 
+        transition: background-image 1s ease-in-out;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: transparent; 
+        display: flex;
+        justify-content: flex-start; 
+        align-items: center;
+        text-align: left;
+        padding: 20px 40px; 
+    }
+
+    .hero-quote {
+        font-size: clamp(2rem, 6vw, 4rem);
+        font-weight: 300; 
+        color: var(--color-light-text);
+        margin: 0;
+        line-height: 1.3;
+        max-width: 800px;
+        text-shadow: none; 
+    }
+
+    /* 2. Intro Section */
+    .intro-section {
+        max-width: 1000px;
+        margin: 80px auto;
+        padding: 0 20px;
+        text-align: left;
+        color: var(--color-secondary);
+    }
+    
+    .intro-section p {
+        font-size: var(--font-large);
+        margin-bottom: 20px;
+    }
+    
+    /* 3. GALLERY SECTION (Background: #554D4A) */
+    .gallery-section {
+        background-color: var(--color-gallery-bg);
+        padding: 80px 20px;
+        color: var(--color-light-text);
+        text-align: center;
+    }
+    
+    .gallery-content {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 40px;
+    }
+    
+    .gallery-item img {
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: cover;
+        border-radius: 4px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        transition: transform 0.3s;
+    }
+    
+    .gallery-item img:hover {
+        transform: scale(1.02);
+    }
+
+    /* 4. PROCESS AND TIPS SECTION (Background: #E2DFD6) */
+    .process-section {
+        background-color: var(--color-process-bg);
+        padding: 80px 20px;
+        color: var(--color-primary);
+        text-align: left;
+    }
+    
+    .process-content {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .process-list {
+        list-style: none;
+        padding: 0;
+        margin: 40px 0;
+    }
+    
+    /* Clean List Styles */
+    .process-list li {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 30px; 
+        padding: 0;
+        background: transparent; 
+        border-radius: 0;
+        box-shadow: none; 
+        border: none; 
+    }
+    
+    .process-list li:hover {
+        transform: none; 
+    }
+    
+    .process-icon {
+        font-size: 1.5rem;
+        margin-right: 25px;
+        flex-shrink: 0;
+        color: var(--color-light-text); /* White icon */
+        background: var(--color-primary); /* Black circle */
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 5px; 
+    }
+    
+    .process-text {
+        color: var(--color-primary); /* Black text on light background */
+        background: transparent; 
+        padding: 0;
+        border-radius: 0;
+        width: 100%;
+    }
+    
+    .process-text strong {
+        display: block;
+        font-size: var(--font-large);
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    /* How to Book Button */
+    .book-link {
+        display: inline-block;
+        margin-top: 30px;
+        padding: 15px 40px;
+        background: var(--color-primary);
+        color: var(--color-light-text);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-decoration: none;
+        border: 2px solid var(--color-primary);
+        transition: background 0.3s, color 0.3s;
+    }
+    
+    .book-link:hover {
+        background: var(--color-background);
+        color: var(--color-primary);
+    }
+
+    /* --- MARQUEE & FOOTER (Reused) --- */
+    .marquee-container {
+        margin: 0; 
+        overflow: hidden;
+        background: var(--color-primary);
+        padding: 15px 0;
+    }
+
+    .marquee-content {
+        display: flex;
+        width: fit-content; 
+        animation: scroll-left 30s linear infinite;
+        white-space: nowrap;
+    }
+
+    .marquee-text {
+        font-size: clamp(1.1rem, 3vw, 1.5rem);
+        color: var(--color-background);
+        letter-spacing: 2px;
+        padding-right: 50px;
+        text-transform: uppercase;
+        flex-shrink: 0; 
+    }
+
+    @keyframes scroll-left {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-50%); } 
+    }
+
+    footer {
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .social-icons-footer {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 20px;
+    }
+    .social-icons-footer a {
+        color: #888;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    .social-icons-footer a:hover {
+        color: var(--color-primary);
+    }
+
+    .copyright-text {
+        font-size: 0.75rem;
+        color: #666;
+    }
+    
+    .copyright-text a {
+        color: inherit;
+        text-decoration: none;
+        font-size: inherit; 
+        font-weight: normal; 
+    }
+
+
+    /* Scroll Animation */
+    .scroll-animate {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .scroll-animate.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="assets/logo.jpg" alt="Logo" />
+    </div>
+
+    <div class="hamburger" onclick="openMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</header>
+
+<!-- FULLSCREEN MENU -->
+<div class="menu-overlay" id="menu">
+    <div class="close-icon" onclick="closeMenu()">×</div>
+    <a class="menu-item" href="index.html">Home</a>
+    <a class="menu-item" href="about.html">About</a>
+    <div class="menu-item" onclick="toggleSubmenu('info-sub')">Info</div>
+    <div id="info-sub" class="submenu">
+        <a href="faqs.html">Faqs</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="terms.html">Terms & Conditions</a>
+    </div>
+    <div class="menu-item" onclick="toggleSubmenu('services-sub')">Services</div>
+    <div id="services-sub" class="submenu">
+        <a href="maternity.html">Maternity</a>
+        <a href="new-borns.html">New Borns</a>
+        <a href="family.html">Family</a>
+        <a href="couples.html">Couples</a>
+        <a href="boudoir.html">Boudoir</a>
+        <a href="portrait.html">Portrait</a>
+        <a href="graduation.html">Graduation</a>
+        <a href="wedding.html">Intimate Wedding</a>
+    </div>
+    <a class="menu-item" href="book.html">Book A Session</a>
+    <a class="menu-item" href="blog.html">Blog</a>
+    <a class="menu-item" href="contact.html">Contact</a>
+</div>
+
+<main class="family-main">
+    
+    <!-- 1. HERO SLIDESHOW SECTION -->
+    <section class="hero-slideshow scroll-animate" id="family-hero">
+        <div class="hero-overlay">
+            <h1 class="hero-quote">
+                "We don't remember days, we remember moments, together."
+            </h1>
+        </div>
+    </section>
+
+    <!-- 2. INTRO SECTION -->
+    <section class="intro-section scroll-animate">
+        <h2>The Heart of Family Storytelling</h2>
+        <p>Family sessions are built on connection, laughter, and authentic moments. Forget stiff poses—my approach is relaxed and natural, designed to capture your family's unique dynamics and genuine love for each other.</p>
+        <p>I aim to create images that are full of life and emotion, reflecting who you truly are. Whether we are chasing sunsets on the beach, playing games in a sun-drenched field, or cuddling on your favorite sofa, we will freeze these fleeting milestones into permanent, cherished artwork.</p>
+    </section>
+
+    <!-- 3. GALLERY SECTION (Background: #554D4A) -->
+    <section class="gallery-section">
+        <div class="gallery-content scroll-animate">
+            <h2>Gallery of Moments</h2>
+            
+            <div class="gallery-grid">
+                <!-- NOTE: Replace these with actual family images -->
+                <div class="gallery-item"><img src="assets/family1.jpg" alt="Family playing in a field"></div>
+                <div class="gallery-item"><img src="assets/family2.jpg" alt="Parents holding their child at sunset"></div>
+                <div class="gallery-item"><img src="assets/family3.jpg" alt="Candid photo of siblings laughing"></div>
+                <div class="gallery-item"><img src="assets/family4.jpg" alt="Large extended family portrait"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. PROCESS AND TIPS SECTION (Background: #E2DFD6) -->
+    <section class="process-section">
+        <div class="process-content scroll-animate">
+            <h2>Making Your Family Session Fun and Effortless</h2>
+            <p style="color: var(--color-primary); font-weight: 500; margin-bottom: 40px;">Preparation is key to a smooth and enjoyable family session. Follow these tips to ensure we capture your best moments.</p>
+            
+            <ul class="process-list">
+                <li class="scroll-animate">
+                    <div class="process-icon"><i class="fa-solid fa-location-dot"></i></div>
+                    <div class="process-text">
+                        <strong>Choose the Perfect Location</strong>
+                        We can shoot in the comfort of your home for a lifestyle feel, or we can choose an outdoor location that reflects your family’s personality—from parks and forests to urban settings.
+                    </div>
+                </li>
+                <li class="scroll-animate">
+                    <div class="process-icon"><i class="fa-solid fa-shirt"></i></div>
+                    <div class="process-text">
+                        <strong>Coordinate, Don't Match</strong>
+                        Avoid wearing identical outfits. Instead, choose 3-4 complementary colors and select outfits that use those colors. Texture and layers look wonderful on camera!
+                    </div>
+                </li>
+                <li class="scroll-animate">
+                    <div class="process-icon"><i class="fa-solid fa-child-reaching"></i></div>
+                    <div class="process-text">
+                        <strong>Keep the Kids Happy</strong>
+                        Ensure children are well-fed and rested before the session. Feel free to bring snacks, drinks, and a favorite toy (or a bribe!) to keep spirits high.
+                    </div>
+                </li>
+                <li class="scroll-animate">
+                    <div class="process-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                    <div class="process-text">
+                        <strong>Relax and Be Present</strong>
+                        The best images happen when you are relaxed. I will handle the directing. Focus on interacting with your family—cuddle, tickle, and whisper secrets to capture genuine smiles.
+                    </div>
+                </li>
+                <li class="scroll-animate">
+                    <div class="process-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <div class="process-text">
+                        <strong>Scheduling Around Naps</strong>
+                        For families with young children, we carefully schedule the session around nap times to ensure the little ones are at their happiest and most cooperative.
+                    </div>
+                </li>
+            </ul>
+
+            <h3 style="color: var(--color-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 50px;">Ready to Book?</h3>
+            <p style="color: var(--color-primary);">Whether you are updating your annual portrait or documenting a specific family milestone, let’s capture your story.</p>
+            <a href="book.html" class="book-link scroll-animate">Book Your Session</a>
+        </div>
+    </section>
+
+</main>
+
+<!-- MARQUEE SECTION -->
+<div class="marquee-container scroll-animate">
+    <div class="marquee-content">
+        <span class="marquee-text">Art is not what you see, but what you make others see. Photography is the story I fail to put into words. &nbsp;&nbsp;&nbsp;</span>
+        <span class="marquee-text">Art is not what you see, but what you make others see. Photography is the story I fail to put into words. &nbsp;&nbsp;&nbsp;</span>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="social-icons-footer scroll-animate">
+        <a href="tel:+27833470218" aria-label="Call"><i class="fa-solid fa-phone"></i></a>
+        <a href="mailto:desmc@xsinet.co.za" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+        <a href="https://www.facebook.com/DesiMcCarthyPhotography" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/desi_mccarthy_photographic_art" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+    </div>
+
+    <div class="copyright-text scroll-animate">
+        Copyright &copy; Desi McCharthy Photographic Art | All Rights Reserved | Web Designs by 
+        <a href="webbytlotly.netlify.app" target="_blank" rel="noopener noreferrer">Tlotly</a>
+    </div>
+</footer>
+
+<script>
+    // --- Menu Logic ---
+    function openMenu() {
+        document.getElementById("menu").classList.add("open");
+    }
+    function closeMenu() {
+        document.getElementById("menu").classList.remove("open");
+    }
+    function toggleSubmenu(id) {
+        let submenu = document.getElementById(id);
+        submenu.style.display = submenu.style.display === "flex" ? "none" : "flex";
+    }
+    
+    // --- Hero Slideshow Logic ---
+    const images = [
+        'assets/family1.jpg',
+        'assets/family2.jpg',
+        'assets/family3.jpg',
+        'assets/family4.jpg'
+    ];
+    let currentIndex = 0;
+    const heroElement = document.getElementById('family-hero');
+
+    function updateSlideshow() {
+        // NOTE: These image paths are placeholders and should be replaced with actual family photos.
+        const nextImage = new Image();
+        nextImage.src = images[currentIndex];
+        
+        nextImage.onload = () => {
+            heroElement.style.backgroundImage = `url('${images[currentIndex]}')`;
+            currentIndex = (currentIndex + 1) % images.length;
+        };
+    }
+
+    // Start the slideshow and change image every 5 seconds (5000ms)
+    updateSlideshow(); 
+    setInterval(updateSlideshow, 5000); 
+
+    // --- Scroll Fade-In Effect (Intersection Observer) ---
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const scrollObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.scroll-animate').forEach(section => {
+        if (section.id !== 'menu') {
+            scrollObserver.observe(section);
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Desi McCarthy Photographic Art</title>
+
+<!-- Load Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJzL5qQ/14E0p+1E+FjE7jN6w0oI4g2Z3rQ0z5G8bF5/nF0kI/b2lR7g7l0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    :root {
+        /* Define large, responsive font sizes */
+        --font-base: clamp(1rem, 1.5vw, 1.15rem); /* For general text, slightly larger than 16px */
+        --font-large: clamp(1.2rem, 2.5vw, 1.5rem); /* For large paragraphs */
+        --font-heading: clamp(2.5rem, 6vw, 4rem); /* Increased size for H2 (Typing Text) */
+        --color-primary: #000;
+        --color-secondary: #333;
+        --color-background: #F5F2EB;
+    }
+
+    body {
+        margin: 0;
+        background: var(--color-background);
+        font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    /* Apply large font size globally to all text elements, as requested */
+    p, a, h1, h3, div, span, button, input {
+        font-size: var(--font-base);
+    }
+    
+    /* Specific size overrides */
+    h1 { font-size: clamp(3rem, 7vw, 4.5rem); }
+    h2 { 
+        font-size: var(--font-heading); /* Use the larger heading size */
+        line-height: 1.3;
+        font-weight: 300;
+    }
+    .hero-content p { font-size: var(--font-base); }
+    
+    /* Header */
+    header {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 20;
+        background: var(--color-background);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* Logo */
+    .logo img {
+        width: 150px;
+        height: auto;
+    }
+
+    /* Hamburger Icon */
+    .hamburger {
+        width: 70px;
+        height: 22px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+        margin-right: 10px;
+    }
+
+    .hamburger span {
+        width: 50%;
+        height: 2px;
+        background: var(--color-primary);
+        display: block;
+        border-radius: 1px;
+        transition: 0.3s;
+    }
+
+    /* Fullscreen Menu */
+    .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: var(--color-background);
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+    }
+
+    .menu-overlay.open {
+        display: flex;
+        opacity: 1;
+    }
+
+    /* Close Icon */
+    .close-icon {
+        position: absolute;
+        top: 22px;
+        right: 25px;
+        font-size: 40px;
+        color: var(--color-primary);
+        cursor: pointer;
+        display: none;
+        font-weight: 200;
+    }
+
+    .menu-overlay.open .close-icon {
+        display: block;
+    }
+
+    /* Menu Text */
+    .menu-item {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        margin: 14px 0;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--color-primary);
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 300;
+    }
+
+    /* Submenus */
+    .submenu {
+        display: none;
+        flex-direction: column;
+        margin-top: 6px;
+    }
+
+    .submenu a {
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        margin: 6px 0;
+        color: var(--color-primary);
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: 300;
+        letter-spacing: 1px;
+    }
+
+    /* HERO SLIDESHOW */
+    .hero {
+        position: relative;
+        width: 100%;
+        max-width: 1600px;
+        /* Adjusted margin top to be under the fixed header */
+        margin: 80px auto 0; 
+        aspect-ratio: 3 / 4;
+        max-height: 80vh;
+        overflow: hidden;
+    }
+    @media (min-width: 1024px) {
+        .hero {
+            aspect-ratio: 16 / 7;
+            max-height: none;
+        }
+    }
+
+    .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        opacity: 0;
+        animation: fadeSlideshow 25s infinite;
+    }
+    /* Updated Slideshow Image Paths */
+    .slide:nth-child(1) { background-image: url('assets/desi1.jpg'); animation-delay: 0s; }
+    .slide:nth-child(2) { background-image: url('assets/desi2.jpg'); animation-delay: 5s; }
+    .slide:nth-child(3) { background-image: url('assets/desi3.jpg'); animation-delay: 10s; }
+    .slide:nth-child(4) { background-image: url('assets/desi4.jpg'); animation-delay: 15s; }
+    .slide:nth-child(5) { background-image: url('assets/desi5.jpg'); animation-delay: 20s; }
+
+    @keyframes fadeSlideshow {
+        0%   { opacity: 0; }
+        8%   { opacity: 1; }
+        20%  { opacity: 1; }
+        28%  { opacity: 0; }
+        100% { opacity: 0; }
+    }
+
+    /* Hero text */
+    .hero-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: white;
+        width: 90%;
+        z-index: 10;
+    }
+
+    .hero-content p {
+        letter-spacing: 4px;
+        font-weight: 300;
+    }
+
+    .hero-content h1 {
+        margin-top: 10px;
+        font-weight: 400;
+    }
+
+    .btn {
+        border: 1px solid #fff;
+        padding: 12px 32px;
+        color: #fff;
+        letter-spacing: 3px;
+        text-decoration: none;
+        font-size: var(--font-base);
+        margin-top: 25px;
+        display: inline-block;
+        transition: background-color 0.3s, color 0.3s;
+    }
+    .btn:hover {
+        background: white;
+        color: var(--color-primary);
+    }
+
+    /* ABOUT DESI SECTION */
+    .about-desi {
+        max-width: 1000px;
+        margin: 100px auto;
+        padding: 0 20px;
+        display: flex;
+        flex-direction: column; /* Always stacked */
+        align-items: flex-start;
+        gap: 40px;
+    }
+
+    .about-text-container {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%; /* Ensure text container takes full width */
+    }
+
+    .about-desi .short-sentence {
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        font-size: var(--font-base);
+        color: var(--color-primary);
+    }
+
+    .about-desi h2 {
+        /* Static text, size controlled by --font-heading */
+        color: var(--color-primary);
+        margin-top: 10px; 
+        margin-bottom: 20px;
+    }
+    
+    /* Image container positioning for Desi portrait */
+    .about-desi .portrait-image-wrapper {
+        width: 100%;
+        max-width: 500px;
+        margin-top: 30px; /* Space under the H2 */
+        margin-bottom: 30px; /* Space above the paragraph */
+        align-self: center; /* Center the portrait image */
+    }
+    
+    /* Image Styling: Full width/height, no rounded corners */
+    .about-desi img {
+        width: 100%;
+        height: 500px; /* Fixed height for portrait aspect */
+        object-fit: cover;
+        max-width: 100%;
+    }
+    @media (max-width: 767px) {
+        .about-desi img {
+            height: 400px;
+        }
+    }
+
+    /* GET TO KNOW ME Button Fix: Ensure it's only content width */
+    .about-desi .btn-about {
+        border: 1px solid var(--color-primary);
+        padding: 12px 28px;
+        text-decoration: none;
+        color: var(--color-primary);
+        letter-spacing: 2px;
+        font-size: var(--font-base);
+        display: inline-block; /* Crucial for content-based width */
+        align-self: flex-start; /* Aligns to the left/start */
+        transition: background-color 0.3s, color 0.3s;
+        white-space: nowrap;
+        margin-top: 40px; /* Space after paragraph */
+    }
+    .about-desi .btn-about:hover {
+        background: var(--color-primary);
+        color: var(--color-background);
+    }
+    
+    /* Enlarged paragraph font size */
+    .about-desi p {
+        font-size: var(--font-large);
+        line-height: 1.8;
+        color: var(--color-secondary);
+        margin: 0; /* Reset margins for clean flow */
+    }
+
+    /* PORTFOLIO GALLERY SECTION */
+    #portfolio-gallery {
+        max-width: 1200px;
+        margin: 100px auto;
+        padding: 0 20px;
+    }
+
+    .gallery-title {
+        text-align: center;
+        margin-bottom: 50px;
+        font-weight: 300;
+        text-transform: uppercase;
+        letter-spacing: 5px;
+    }
+
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 2 per row on mobile */
+        gap: 15px;
+    }
+    
+    @media (min-width: 768px) {
+        .gallery-grid {
+            grid-template-columns: repeat(3, 1fr); /* 3 per row on desktop */
+            gap: 25px;
+        }
+    }
+
+    .gallery-item {
+        overflow: hidden;
+    }
+
+    .gallery-item img {
+        width: 100%;
+        height: auto; /* Original sizes (maintain aspect ratio) */
+        display: block;
+        transition: transform 0.4s ease-in-out;
+    }
+    .gallery-item img:hover {
+        transform: scale(1.03);
+    }
+
+    /* QUOTE SECTION */
+    .quote-section {
+        background: var(--color-secondary);
+        color: white;
+        padding: 80px 20px;
+        text-align: center;
+        /* Removed bottom margin to sit flush with the service divider below */
+        margin: 100px 0 0 0; 
+    }
+
+    .quote-section blockquote {
+        max-width: 900px;
+        margin: 0 auto 20px;
+        font-style: italic;
+        font-size: clamp(1.5rem, 4vw, 2.2rem);
+        line-height: 1.6;
+        font-weight: 300;
+    }
+
+    .quote-section cite {
+        display: block;
+        margin-top: 15px;
+        font-style: normal;
+        font-size: var(--font-base);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    /* BOOKING CTA SECTION - Full Bleed, Hero-like appearance */
+    .booking-cta-section {
+        width: 100%; /* Full width, edge-to-edge */
+        /* Removed top margin to sit flush with the service divider above */
+        margin: 0 0 0 0; 
+        position: relative;
+        background-image: url('assets/banner.jpg'); 
+        background-size: cover;
+        background-position: center;
+        min-height: 500px; 
+        display: flex;
+        align-items: center;
+    }
+    @media (min-width: 1200px) {
+        .booking-cta-section {
+            min-height: 600px; 
+        }
+    }
+    @media (max-width: 768px) {
+        .booking-cta-section {
+            min-height: 400px;
+        }
+    }
+
+    .booking-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.45);
+        padding: 50px 30px;
+    }
+
+    .booking-content {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        color: white;
+        text-align: right; /* Aligned to the right */
+        padding-right: 5%;
+    }
+
+    .booking-content h3 {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        margin-bottom: 0; 
+        font-weight: 700; 
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .booking-content .subtitle {
+        font-size: var(--font-large);
+        font-weight: 300; 
+        max-width: 500px; 
+        margin-left: auto; /* Push content to the right */
+        margin-top: 10px;
+        margin-bottom: 30px;
+        line-height: 1.5;
+    }
+    
+    .booking-content .btn {
+        border: 2px solid white;
+        margin-top: 20px;
+    }
+    .booking-content .btn:hover {
+        background: white;
+        color: var(--color-primary);
+    }
+
+    /* MARQUEE SECTIONS */
+    
+    /* NEW SERVICE DIVIDER MARQUEE (The one being kept) */
+    .service-divider-marquee {
+        /* Ensures it sits flush with the quote above and CTA below */
+        margin: 0; 
+        overflow: hidden;
+        background: var(--color-background); /* White/Beige background */
+        border-top: 1px solid var(--color-primary);
+        border-bottom: 1px solid var(--color-primary);
+        padding: 8px 0;
+    }
+    
+    /* Original Bottom Marquee (Black) */
+    .marquee-container {
+        margin: 0; /* Ensures it is exactly under the booking section */
+        overflow: hidden;
+        background: var(--color-primary);
+        padding: 15px 0;
+    }
+
+    /* Common marquee content settings */
+    .marquee-content {
+        display: flex;
+        width: fit-content; 
+        animation: scroll-left 30s linear infinite;
+        white-space: nowrap;
+    }
+
+    /* Existing bottom marquee text */
+    .marquee-text {
+        font-size: clamp(1.1rem, 3vw, 1.5rem);
+        color: var(--color-background);
+        letter-spacing: 2px;
+        padding-right: 50px;
+        text-transform: uppercase;
+        flex-shrink: 0; 
+    }
+    
+    /* New service marquee link styling */
+    .service-marquee-content a {
+        font-size: clamp(1.1rem, 3vw, 1.5rem);
+        color: var(--color-primary);
+        text-decoration: none;
+        letter-spacing: 5px;
+        padding-right: 50px;
+        text-transform: uppercase;
+        flex-shrink: 0;
+        font-weight: 500;
+        transition: color 0.2s;
+        /* Separator style */
+        position: relative;
+    }
+    .service-marquee-content a::after {
+        content: '—'; /* Use a dash as a separator */
+        color: var(--color-primary);
+        padding-left: 50px;
+        font-weight: 300;
+        letter-spacing: 0;
+        font-size: 1rem;
+    }
+    .service-marquee-content a:hover {
+        color: var(--color-secondary);
+    }
+
+
+    /* Animation now moves the container */
+    @keyframes scroll-left {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-50%); } 
+    }
+
+    /* FOOTER */
+    footer {
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 20px;
+    }
+
+    .social-icons a {
+        color: #888;
+        font-size: 0.9rem; /* Smaller Icons */
+        transition: color 0.3s;
+        text-decoration: none;
+    }
+
+    .social-icons a:hover {
+        color: var(--color-primary);
+    }
+    
+    .copyright-text {
+        font-size: 0.75rem; /* Smaller copyright text */
+        color: #666; /* Darker grey for copyright */
+    }
+    
+    .copyright-text a {
+        color: inherit;
+        text-decoration: none;
+        font-size: inherit;
+    }
+    .copyright-text a:hover {
+        color: var(--color-primary);
+    }
+
+    /* SCROLL MOTION EFFECT (Intersection Observer Targets) */
+    .scroll-animate {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .scroll-animate.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* Ensure all elements that are scroll-animated do not flicker on load */
+    .hero, header, .menu-overlay { 
+        transition: none;
+        opacity: 1; 
+        transform: none;
+    }
+
+</style>
+
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="assets/logo.jpg" alt="Logo" />
+    </div>
+
+    <div class="hamburger" onclick="openMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</header>
+
+<!-- FULLSCREEN MENU -->
+<div class="menu-overlay" id="menu">
+    <div class="close-icon" onclick="closeMenu()">×</div>
+    <!-- Menu items here... -->
+    <a class="menu-item" href="index.html">Home</a>
+    <a class="menu-item" href="about.html">About</a>
+    <div class="menu-item" onclick="toggleSubmenu('info-sub')">Info</div>
+    <div id="info-sub" class="submenu">
+        <a href="faqs.html">Faqs</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="terms.html">Terms & Conditions</a>
+    </div>
+    <div class="menu-item" onclick="toggleSubmenu('services-sub')">Services</div>
+    <div id="services-sub" class="submenu">
+        <a href="maternity.html">Maternity</a>
+        <a href="new-borns.html">New Borns</a>
+        <a href="family.html">Family</a>
+        <a href="couples.html">Couples</a>
+        <a href="boudoir.html">Boudoir</a>
+        <a href="portrait.html">Portrait</a>
+        <a href="graduation.html">Graduation</a>
+        <a href="wedding.html">Intimate Wedding</a>
+    </div>
+    <a class="menu-item" href="book.html">Book A Session</a>
+    <a class="menu-item" href="blog.html">Blog</a>
+    <a class="menu-item" href="contact.html">Contact</a>
+</div>
+
+<!-- HERO SLIDESHOW -->
+<section class="hero">
+    <!-- Slideshow background images are now using assets/desi[1-5].jpg via CSS -->
+    <div class="slide"></div>
+    <div class="slide"></div>
+    <div class="slide"></div>
+    <div class="slide"></div>
+    <div class="slide"></div>
+
+    <div class="hero-content">
+        <p>TIMELESS PORTRAITS THAT CAPTURE LIFE</p>
+        <h1>Purposeful photography fueled by passion.</h1>
+        <a href="#portfolio-gallery" class="btn">VIEW PORTFOLIO</a>
+    </div>
+</section>
+
+<!-- ABOUT DESI SECTION - Image is correctly placed under the H2 -->
+<section class="about-desi scroll-animate">
+    <div class="about-text-container">
+        <p class="short-sentence">IN A WORLD WHERE YOU CAN BE ANYTHING: BE YOURSELF</p>
+        <!-- H2 is the first main element -->
+        <h2>Hi I'm Desi, and I am a natural light photographer based in Bloemfontein, South Africa.</h2>
+    </div>
+
+    <!-- Portrait image is now SECOND, under the H2 -->
+    <div class="portrait-image-wrapper">
+        <img src="assets/desi-portrait.jpg" alt="Desi McCarthy">
+    </div>
+
+    <div class="about-text-container">
+        <!-- Paragraph is now THIRD -->
+        <p>I capture moments in their most authentic and natural light. My goal is to create timeless portraits that tell your unique story, celebrating life’s genuine emotions and fleeting moments. I believe every photograph should evoke feeling, connection, and nostalgia, transforming simple snapshots into cherished heirlooms.</p>
+        
+        <!-- Button is FOURTH -->
+        <a href="about.html" class="btn-about">GET TO KNOW ME</a>
+    </div>
+</section>
+
+<!-- PORTFOLIO GALLERY SECTION -->
+<section id="portfolio-gallery" class="scroll-animate">
+    <h3 class="gallery-title">A Curated Selection of Work</h3>
+    <div class="gallery-grid">
+        <!-- Updated Gallery Image Paths -->
+        <div class="gallery-item"><img src="assets/desi6.jpg" alt="Portfolio Image 1"></div>
+        <div class="gallery-item"><img src="assets/desi7.jpg" alt="Portfolio Image 2"></div>
+        <div class="gallery-item"><img src="assets/desi8.jpg" alt="Portfolio Image 3"></div>
+        <div class="gallery-item"><img src="assets/desi9.jpg" alt="Portfolio Image 4"></div>
+        <div class="gallery-item"><img src="assets/desi10.jpg" alt="Portfolio Image 5"></div>
+        <div class="gallery-item"><img src="assets/desi11.jpg" alt="Portfolio Image 6"></div>
+    </div>
+</section>
+
+
+<!-- QUOTE SECTION -->
+<section class="quote-section scroll-animate">
+    <blockquote>
+        In the world of photography you get to share a captured moment with people
+    </blockquote>
+    <cite>— Ethen Callister</cite>
+</section>
+
+<!-- SINGLE SERVICE MARQUEE - NEW POSITION (Between Quote and Booking CTA) -->
+<div class="service-divider-marquee scroll-animate">
+    <div class="marquee-content service-marquee-content">
+        <!-- List of Services (Duplicated for seamless loop) -->
+        <a href="maternity.html">Maternity</a>
+        <a href="new-borns.html">New Borns</a>
+        <a href="family.html">Family</a>
+        <a href="couples.html">Couples</a>
+        <a href="boudoir.html">Boudoir</a>
+        <a href="portrait.html">Portrait</a>
+        <a href="graduation.html">Graduation</a>
+        <a href="wedding.html">Intimate Wedding</a>
+        <!-- Duplicate Set -->
+        <a href="maternity.html">Maternity</a>
+        <a href="new-borns.html">New Borns</a>
+        <a href="family.html">Family</a>
+        <a href="couples.html">Couples</a>
+        <a href="boudoir.html">Boudoir</a>
+        <a href="portrait.html">Portrait</a>
+        <a href="graduation.html">Graduation</a>
+        <a href="wedding.html">Intimate Wedding</a>
+    </div>
+</div>
+
+<!-- BOOKING CTA SECTION - Now full width, flush with marquee above -->
+<section class="booking-cta-section scroll-animate">
+    <div class="booking-overlay"></div>
+    <div class="booking-content">
+        <!-- Bold Title -->
+        <h3>Art with Purpose</h3>
+        <!-- Light font paragraph -->
+        <p class="subtitle">Capturing moments in their most authentic and natural light.</p>
+        <a href="book.html" class="btn">BOOK SESSION</a>
+    </div>
+</section>
+
+<!-- MARQUEE SECTION (Original bottom black one) -->
+<div class="marquee-container scroll-animate">
+    <!-- Duplicated content to ensure continuous loop without a gap -->
+    <div class="marquee-content">
+        <span class="marquee-text">Art is not what you see, but what you make others see. Photography is the story I fail to put into words. &nbsp;&nbsp;&nbsp;</span>
+        <span class="marquee-text">Art is not what you see, but what you make others see. Photography is the story I fail to put into words. &nbsp;&nbsp;&nbsp;</span>
+    </div>
+</div>
+
+<!-- FOOTER SECTION -->
+<footer>
+    <div class="social-icons scroll-animate">
+        <!-- Icons are small via CSS -->
+        <a href="tel:+27833470218" aria-label="Call Desi McCarthy"><i class="fa-solid fa-phone"></i></a>
+        <a href="mailto:desmc@xsinet.co.za" aria-label="Email Desi McCarthy"><i class="fa-solid fa-envelope"></i></a>
+        <a href="https://www.facebook.com/DesiMcCarthyPhotography" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/desi_mccarthy_photographic_art" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+    </div>
+
+    <!-- Copyright text is small and grey -->
+    <div class="copyright-text scroll-animate">
+        Copyright &copy; Desi McCharthy Photographic Art | All Rights Reserved | Web Designs by 
+        <a href="https://webbytlotly.netlify.app" target="_blank" rel="noopener noreferrer">Tlotly</a>
+    </div>
+</footer>
+
+<script>
+    // --- Menu Logic (Existing) ---
+    function openMenu() {
+        document.getElementById("menu").classList.add("open");
+    }
+
+    function closeMenu() {
+        document.getElementById("menu").classList.remove("open");
+    }
+
+    function toggleSubmenu(id) {
+        let submenu = document.getElementById(id);
+        submenu.style.display = submenu.style.display === "flex" ? "none" : "flex";
+    }
+
+    // --- Scroll Fade-In Effect (Intersection Observer) ---
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const scrollObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.scroll-animate').forEach(section => {
+        scrollObserver.observe(section);
+    });
+</script>
+
+</body>
+</html>
